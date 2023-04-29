@@ -1,7 +1,9 @@
 package conns
 
 import (
+	"github.com/rs/zerolog"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 	"sync"
 )
 
@@ -9,11 +11,13 @@ import (
 type GrpcConns struct {
 	connections map[string]*grpc.ClientConn
 	rwLock      sync.RWMutex
+	logger      *zerolog.Logger
 }
 
-func New() *GrpcConns {
+func New(logger *zerolog.Logger) *GrpcConns {
 	return &GrpcConns{
 		connections: map[string]*grpc.ClientConn{},
+		logger:      logger,
 	}
 }
 
@@ -47,8 +51,18 @@ func (c *GrpcConns) Get(target ...string) []*grpc.ClientConn {
 
 	conns := make([]*grpc.ClientConn, 0, len(target))
 	for _, t := range target {
-		if conn, ok := c.connections[t]; ok {
+		conn, ok := c.connections[t]
+		switch ok {
+		case true:
 			conns = append(conns, conn)
+		case false:
+			conn, err := grpc.Dial(t, grpc.WithTransportCredentials(insecure.NewCredentials()))
+			if err != nil {
+				c.logger.Warn().Err(err).Str("target", t).Msg("dial failed")
+				continue
+			}
+			conns = append(conns, conn)
+			c.connections[t] = conn
 		}
 	}
 	return conns
