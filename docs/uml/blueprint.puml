@@ -1,0 +1,33 @@
+@startuml
+
+actor Producer
+
+queue Traffic
+node Station1
+node Station2
+
+actor Consumer1
+actor Consumer2
+actor Consumer3
+actor Consumer4
+
+database Redis
+
+Consumer1 -[hidden]down-> Consumer2
+Consumer2 -[hidden]down-> Consumer3
+Consumer3 -[hidden]down-> Consumer4
+
+Producer -> Traffic : send
+
+Traffic -up-> Redis: Get consumers
+
+Traffic -> Station1 : send
+Station1 -> Consumer1 : send
+Station1 -> Consumer2 : send
+Station1 -> Consumer3 : send
+
+Traffic -> Station2 : send
+Station2 -> Consumer3 : send
+Station2 -> Consumer4 : send
+
+@enduml
