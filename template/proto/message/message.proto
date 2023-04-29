@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option go_package = "./message";
+
+package message;
+
+message SendMsg {
+  bytes Data = 1;
+}
+
+message ReplyMsg {
+  bool Success = 1;
+}
+
+service MessageQueue {
+  rpc Send(SendMsg) returns (ReplyMsg);
+}
