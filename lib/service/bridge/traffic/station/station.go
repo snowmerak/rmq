@@ -5,7 +5,7 @@ import (
 	"github.com/snowmerak/rmq/gen/bean"
 	"github.com/snowmerak/rmq/gen/proto/message"
 	client "github.com/snowmerak/rmq/lib/client/message"
-	"github.com/snowmerak/rmq/lib/worker/bridge"
+	"github.com/snowmerak/rmq/lib/service/bridge"
 	"google.golang.org/grpc"
 	"sync"
 	"sync/atomic"

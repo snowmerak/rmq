@@ -3,11 +3,10 @@ package traffic
 import (
 	"context"
 	"github.com/snowmerak/rmq/gen/bean"
-	"github.com/snowmerak/rmq/lib/worker/bridge"
-	"github.com/snowmerak/rmq/lib/worker/bridge/traffic/station"
+	"github.com/snowmerak/rmq/lib/service/bridge"
+	"github.com/snowmerak/rmq/lib/service/bridge/traffic/station"
 )
 
-//go:bean
 type Traffic struct {
 	in  *bridge.Bridge[Signal]
 	out map[string]*station.Station
