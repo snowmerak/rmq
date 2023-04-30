@@ -2,7 +2,6 @@ package bean
 
 import (
 	"github.com/snowmerak/rmq/lib/client/subset"
-	"github.com/snowmerak/rmq/lib/worker/bridge/traffic"
 	"github.com/snowmerak/rmq/lib/worker/conns"
 	"github.com/snowmerak/rmq/lib/worker/logger"
 	"github.com/snowmerak/rmq/lib/worker/pool"
@@ -10,7 +9,6 @@ import (
 
 type Bean struct {
 	subset    *subset.Subset
-	traffic   *traffic.Traffic
 	grpcconns *conns.GrpcConns
 	logger    *logger.Logger
 	pool      *pool.Pool
@@ -33,11 +31,6 @@ func (b *Builder) AddSubset(subset *subset.Subset) *Builder {
 	return b
 }
 
-func (b *Builder) AddTraffic(traffic *traffic.Traffic) *Builder {
-	b.bean.traffic = traffic
-	return b
-}
-
 func (b *Builder) AddGrpcConns(grpcconns *conns.GrpcConns) *Builder {
 	b.bean.grpcconns = grpcconns
 	return b
@@ -55,10 +48,6 @@ func (b *Builder) AddPool(pool *pool.Pool) *Builder {
 
 func (b *Bean) Subset() *subset.Subset {
 	return b.subset
-}
-
-func (b *Bean) Traffic() *traffic.Traffic {
-	return b.traffic
 }
 
 func (b *Bean) GrpcConns() *conns.GrpcConns {
